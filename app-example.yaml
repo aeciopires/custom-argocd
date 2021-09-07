@@ -1,0 +1,27 @@
+# https://github.com/argoproj/argo-cd/issues/2531
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: testapp
+  namespace: testapp
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io  
+spec:
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    targetRevision: 6.1.1
+    chart: grafana
+    helm:
+      releaseName: testapp
+      valueFiles:
+        - https://raw.githubusercontent.com/aeciopires/my_helm_charts/master/monitoring/grafana/minikube/values.yaml
+        - https://raw.githubusercontent.com/aeciopires/my_helm_charts/master/monitoring/grafana/minikube/secrets.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: testapp
+  syncPolicy:
+    automated:
+      selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
