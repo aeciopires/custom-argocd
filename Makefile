@@ -1,7 +1,9 @@
-VERSION="v0.1.0"
+VERSION="v0.2.0"
 APP_NAME="custom-argocd"
 PATH_DOCKERFILE="./Dockerfile"
 SHELL=/bin/bash
+AWS_PROFILE='default'
+AWS_KMS_ARN='arn:aws:kms:us-east-2:255686512659:key/d38c3af4-e577-4634-81b2-26a54a7ba9b6'
 
 # References
 # https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php
@@ -23,7 +25,10 @@ image:
 		echo "[ERROR] File not found: ${PATH_DOCKERFILE}"
 		exit 1
 	fi
-	docker build -t "${APP_NAME}:${VERSION}" .
+	docker build \
+	  --build-arg AWS_PROFILE=${AWS_PROFILE} \
+	  --build-arg AWS_KMS_ARN=${AWS_KMS_ARN} \
+	  -t "${APP_NAME}:${VERSION}" .
 
 container:
 	make requirements
@@ -38,4 +43,4 @@ publish:
 	docker tag "${APP_NAME}:${VERSION}" "$${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}"
 	docker push "$${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}"
 	wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -O ./install.yaml
-	sed -i "s~image: quay.io/argoproj/argocd\(.*\)~image: $${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}~g" ./install.yaml
+	sed -i "s~image: quay.io/argoproj/argocd:\(.*\)~image: $${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}~g" ./install.yaml

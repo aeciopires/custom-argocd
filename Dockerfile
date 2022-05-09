@@ -1,8 +1,8 @@
-FROM argoproj/argocd:v2.1.2
+FROM argoproj/argocd:v2.3.3
 
 LABEL maintainer="Aecio Pires" \
-      date_create="06/09/2021" \
-      version="0.1.0" \
+      date_create="09/05/2022" \
+      version="0.2.0" \
       description="My custom Docker image of Argo CD to add support other tools" \
       licensce="GPLv3"
 
@@ -16,11 +16,22 @@ LABEL maintainer="Aecio Pires" \
 #  https://gitlab.com/ittennull/sopshelm
 #  https://github.com/camptocamp/docker-argocd
 
+#---------------------------------#
+# Variables
+#---------------------------------#
+# Environment variables (the value is changed at container startup or build image, if empty, it will be given a default value)
+
+ARG AWS_KMS_ARN
+ENV AWS_KMS_ARN ${AWS_KMS_ARN:-'arn:aws:kms:us-east-2:255686512659:key/d38c3af4-e577-4634-81b2-26a54a7ba9b6'}
+
+ARG AWS_PROFILE
+ENV AWS_PROFILE ${AWS_PROFILE:-'default'}
+
 ENV SOPS_VERSION="v3.7.1" \
-    HELM_SECRETS_VERSION="v3.6.1" \
-    SOPS_CREDENTIALS_FILE='/home/argocd/.sops.yaml' \
-    AWS_KMS_ARN='arn:aws:kms:us-east-2:255686512659:key/d38c3af4-e577-4634-81b2-26a54a7ba9b6' \
-    AWS_PROFILE='default'
+    HELM_SECRETS_VERSION="v3.13.0" \
+    HELM_DIFF_VERSION="v3.4.1" \
+    SOPS_CREDENTIALS_FILE='/home/argocd/.sops.yaml'
+#-------- End - Variables --------#
 
 USER root
 
@@ -52,6 +63,6 @@ RUN curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/down
 USER 999
 
 RUN /usr/local/bin/helm.bin plugin install https://github.com/jkroepke/helm-secrets --version ${HELM_SECRETS_VERSION} \
-    && /usr/local/bin/helm.bin plugin install https://github.com/databus23/helm-diff
+    && /usr/local/bin/helm.bin plugin install https://github.com/databus23/helm-diff --version ${HELM_DIFF_VERSION}
 
 ENV HELM_PLUGINS="/home/argocd/.local/share/helm/plugins/"

@@ -48,7 +48,7 @@ The documentation on Github presents information about installing on Ubuntu and 
 ```bash
 mkdir /tmp/caches
 
-docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/root/.cache/ aquasec/trivy IMAGE_NAME:IMAGE_TAG
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/root/.cache/ aquasec/trivy image IMAGE_NAME:IMAGE_TAG
 ```
 
 ## Advanced requirements
@@ -66,7 +66,7 @@ Simple shell function for Kubectl installation in Linux 64 bits. Copy and paste 
 ```bash
 sudo su
 
-VERSION=v1.20.4
+VERSION=v1.22.2
 KUBECTL_BIN=kubectl
 
 function install_kubectl {

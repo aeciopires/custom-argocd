@@ -16,7 +16,7 @@ My custom Docker image of Argo CD to add support [Sops](https://github.com/mozil
 * [helm diff](https://github.com/databus23/helm-diff)
 
 > *Argo CD is un-opinionated about how secrets are managed. There's many ways to do it and there's no one-size-fits-all solution.*
-> 
+>
 > Reference: https://argoproj.github.io/argo-cd/operator-manual/secret-management/
 
 A approach sugested is create custom Docker image of Argo CD.
@@ -35,15 +35,17 @@ References:
 
 Install Docker following the instructions in [this tutorial](REQUIREMENTS.md).
 
-> In this image, the ``sops`` command will be configured to encrypt and decrypt secrets using [AWS KMS](https://aws.amazon.com/kms). 
+> In this image, the ``sops`` command will be configured to encrypt and decrypt secrets using [AWS KMS](https://aws.amazon.com/kms).
 >
 > More informations in https://github.com/mozilla/sops#kms-aws-profiles. 
 
-Change the ARN of KMS key in ``AWS_KMS_ARN`` variable in ``custom-argocd/Dockerfile``.
+Change the image version of Argo CD in ``custom-argocd/Dockerfile`` file, in ``from`` line.
 
-Change the image version of Argo CD in ``custom-argocd/Dockerfile`` in ``from`` line.
+Change value of the ``AWS_KMS_ARN`` variable in ``custom-argocd/Makefile`` file.
 
-Change the custom image version of Argo CD in ``custom-argocd/Makefile``.
+Change the value of the ``AWS_PROFILE`` variable in ``custom-argocd/Makefile`` file.
+
+Change the custom image version of Argo CD in ``custom-argocd/Makefile`` file.
 
 Commands to build image:
 
@@ -70,7 +72,7 @@ More information about docker run command: https://docs.docker.com/engine/refere
 
 Access Kubernetes cluster.
 
-Change the AWS credentials in file ``custom-argocd/credentials``
+Change content of the AWS credentials in file ``custom-argocd/credentials``
 
 Search by **argocd-repo-server** *deployment* and add follow content in ``volumeMounts`` section of file ``custom-argocd/install.yaml``:
 
