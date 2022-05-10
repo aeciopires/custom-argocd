@@ -7,6 +7,7 @@
 - [Build and send image to Docker Hub](#build-and-send-image-to-docker-hub)
 - [Use Argo CD Custom](#use-argo-cd-custom)
 - [Deploy of testapp with Argo CD](#deploy-of-testapp-with-argo-cd)
+- [Uninstall Argo CD](#uninstall-argo-cd)
 
 <!-- TOC -->
 
@@ -158,4 +159,12 @@ To remove the application:
 
 ```bash
 argocd app delete sealed-secrets
+```
+
+# Uninstall Argo CD
+
+To uninstall Argo CD:
+
+```bash
+kubectl delete -n argocd -f install.yaml
 ```
