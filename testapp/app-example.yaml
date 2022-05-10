@@ -4,16 +4,16 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "6"
-  name: testapp
-  namespace: testapp
+  name: sealed-secrets
+  namespace: argocd
   finalizers:
   - resources-finalizer.argocd.argoproj.io  
 spec:
   project: default
   source:
+    chart: grafana
     repoURL: https://charts.bitnami.com/bitnami
     targetRevision: 7.6.34
-    chart: grafana
     helm:
       releaseName: testapp
       valueFiles:
