@@ -152,7 +152,7 @@ kubectl apply -f testapp/app-example.yaml
 To remove the application:
 
 ```bash
-argocd app delete sealed-secrets
+kubectl delete -f testapp/app-example.yaml
 ```
 
 # Uninstall Argo CD
