@@ -6,6 +6,7 @@
 - [About](#about)
 - [Build and send image to Docker Hub](#build-and-send-image-to-docker-hub)
 - [Use Argo CD Custom](#use-argo-cd-custom)
+- [Deploy of testapp with Argo CD](#deploy-of-testapp-with-argo-cd)
 
 <!-- TOC -->
 
@@ -101,4 +102,60 @@ kubectl delete secret argocd-aws-credentials -n argocd
 kubectl create -n argocd secret generic argocd-aws-credentials --from-file=credentials=./credentials
 
 kubectl apply -n argocd -f install.yaml
+
+kubectl -n argocd port-forward svc/argocd-server -n argocd 8080:443
+```
+
+The default login is admin and a random password will be generated. To get it, run the following command in another terminal:
+
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+After logging into the Argo CD, change the password at the following address: https://localhost:8080/user-info?changePassword=true
+
+After changing the password in the web interface, you can remove the secret ``argocd-initial-admin-secret``, which contains the initial password with the following command:
+
+```bash
+kubectl -n argocd delete secret argocd-initial-admin-secret
+```
+
+The Argo CD can also be managed from the command line. To do this, run the following commands to install the binary:
+
+```bash
+ARGOCD_BINARY_VERSION=v2.3.3
+
+wget https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_BINARY_VERSION}/argocd-linux-amd64 -O /tmp/argocd-linux-amd64
+
+sudo mv /tmp/argocd-linux-amd64 /usr/bin/argocd
+
+sudo chmod +x /usr/bin/argocd
+```
+
+Authenticate between the binary and the server with the following command:
+
+```bash
+argocd login localhost:8080
+```
+
+# Deploy of testapp with Argo CD
+
+> ATTENTION!!! Tested with kind 0.12.0 and k8s 1.21.10
+
+To deploy the application:
+
+```bash
+argocd app create sealed-secrets \
+--repo https://github.com/aeciopires/custom-argocd.git \
+--path testapp \
+--dest-server https://kubernetes.default.svc \
+--dest-namespace argocd \
+--sync-policy auto \
+--sync-option CreateNamespace=true
+```
+
+To remove the application:
+
+```bash
+argocd app delete sealed-secrets
 ```
