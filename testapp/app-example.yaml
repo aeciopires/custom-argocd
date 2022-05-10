@@ -4,6 +4,7 @@ kind: Application
 metadata:
   annotations:
     argocd.argoproj.io/sync-wave: "6"
+    #argocd.argoproj.io/manifest-generate-paths: ..
   name: sealed-secrets
   namespace: argocd
   finalizers:
@@ -11,14 +12,14 @@ metadata:
 spec:
   project: default
   source:
-    chart: grafana
-    repoURL: https://charts.bitnami.com/bitnami
-    targetRevision: 7.6.34
+    repoURL: https://github.com/aeciopires/custom-argocd.git
+    path: testapp
+    targetRevision: main
     helm:
       releaseName: testapp
       valueFiles:
-        - https://raw.githubusercontent.com/aeciopires/my_helm_charts/master/monitoring/grafana/minikube/values.yaml
-        - https://raw.githubusercontent.com/aeciopires/my_helm_charts/master/monitoring/grafana/minikube/secrets.yaml
+        - values.yaml
+        - secrets.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: testapp

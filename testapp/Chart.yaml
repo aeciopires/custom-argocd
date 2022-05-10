@@ -1,0 +1,8 @@
+apiVersion: v2
+name: grafana
+type: application
+version: 7.6.34
+dependencies:
+- name: grafana
+  version: 7.6.34
+  repository: "https://charts.bitnami.com/bitnami"
