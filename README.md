@@ -146,13 +146,7 @@ argocd login localhost:8080
 To deploy the application:
 
 ```bash
-argocd app create sealed-secrets \
---repo https://github.com/aeciopires/custom-argocd.git \
---path testapp \
---dest-server https://kubernetes.default.svc \
---dest-namespace argocd \
---sync-policy auto \
---sync-option CreateNamespace=true
+kubectl apply -f testapp/app-example.yaml
 ```
 
 To remove the application:
