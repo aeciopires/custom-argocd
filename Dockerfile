@@ -1,8 +1,8 @@
-FROM argoproj/argocd:v2.3.3
+FROM argoproj/argocd:v2.6.0-rc1
 
-LABEL maintainer="Aecio Pires" \
-      date_create="09/05/2022" \
-      version="0.2.0" \
+LABEL maintainer="Aecio Pires, Isaac Mecchi" \
+      date_create="30/12/2022" \
+      version="0.3.0" \
       description="My custom Docker image of Argo CD to add support other tools" \
       licensce="GPLv3"
 
@@ -43,10 +43,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && cd /usr/local/bin \
     && mv helm helm.bin \
-    && mv helm2 helm2.bin \
-    && mv helm-wrapper.sh helm \
-    && ln helm helm2 \
-    && chmod +x helm helm2 \
+    && mv helm-wrapper.sh helm \    
+    && chmod +x helm \
     && echo "creation_rules:" > ${SOPS_CREDENTIALS_FILE} \
     && echo "  - kms: '${AWS_KMS_ARN}'" >> ${SOPS_CREDENTIALS_FILE} \
     && echo "    aws_profile: ${AWS_PROFILE}" >> ${SOPS_CREDENTIALS_FILE} \

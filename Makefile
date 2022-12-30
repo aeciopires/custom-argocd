@@ -1,4 +1,4 @@
-VERSION="v0.2.0"
+VERSION="v0.3.0"
 APP_NAME="custom-argocd"
 PATH_DOCKERFILE="./Dockerfile"
 SHELL=/bin/bash
