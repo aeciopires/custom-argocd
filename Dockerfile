@@ -1,8 +1,8 @@
-FROM argoproj/argocd:v2.3.3
+FROM argoproj/argocd:v2.6.0-rc1
 
-LABEL maintainer="Aecio Pires" \
-      date_create="09/05/2022" \
-      version="0.2.0" \
+LABEL maintainer="Aecio Pires, Isaac Mecchi" \
+      date_create="30/12/2022" \
+      version="0.3.0" \
       description="My custom Docker image of Argo CD to add support other tools" \
       licensce="GPLv3"
 
