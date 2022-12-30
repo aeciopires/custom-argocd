@@ -43,10 +43,8 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && cd /usr/local/bin \
     && mv helm helm.bin \
-    && mv helm2 helm2.bin \
-    && mv helm-wrapper.sh helm \
-    && ln helm helm2 \
-    && chmod +x helm helm2 \
+    && mv helm-wrapper.sh helm \    
+    && chmod +x helm \
     && echo "creation_rules:" > ${SOPS_CREDENTIALS_FILE} \
     && echo "  - kms: '${AWS_KMS_ARN}'" >> ${SOPS_CREDENTIALS_FILE} \
     && echo "    aws_profile: ${AWS_PROFILE}" >> ${SOPS_CREDENTIALS_FILE} \
