@@ -124,10 +124,13 @@ kubectl create -n argocd secret generic argocd-aws-credentials --from-file=crede
 
 kubectl apply -n argocd -f argocd/install_argocd.yaml
 
+# Run the command other terminal using port-forward
 kubectl -n argocd port-forward svc/argocd-server -n argocd 8080:443
 ```
 
-* The default login is admin and a random password will be generated. To get it, run the following command in another terminal:
+* Access the Argo CD interface in your browser using the URL: https://localhost:8080/
+
+* The default login is ``admin`` and a *random password* will be generated. To get it, run the following command in another terminal:
 
 ```bash
 kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
