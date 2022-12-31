@@ -125,7 +125,7 @@ kubectl create -n argocd secret generic argocd-aws-credentials --from-file=crede
 kubectl apply -n argocd -f argocd/install_argocd.yaml
 
 # Run the command other terminal using port-forward
-kubectl -n argocd port-forward svc/argocd-server -n argocd 8080:443
+kubectl -n argocd port-forward svc/argocd-server 8080:443
 ```
 
 * Access the Argo CD interface in your browser using the URL: https://localhost:8080/
@@ -164,15 +164,33 @@ argocd login localhost:8080
 
 # Deploy of podinfo with Argo CD
 
-> ATTENTION!!! Tested with kind 0.13.0 and k8s 1.23.13
+> ATTENTION!!! Tested with kind 0.17.0 and k8s 1.23.13
 
 * Create a new content for ``apps/podinfo/secrets.yaml`` file and encript using your [AWS-KMS](https://aws.amazon.com/kms/).
+  * The original content is:
+
+```yaml
+logLevel: debug
+ui:
+  color: '#ef7b4d'
+  message: PodInfo installed with ArgoCD Multi Sources
+  logo: https://cncf-branding.netlify.app/img/projects/argo/horizontal/color/argo-horizontal-color.svg
+```
 
 * Deploy the application:
 
 ```bash
 kubectl apply -f apps/podinfo/app-example.yaml
 ```
+
+* Run the command:
+
+```bash
+# Run the command other terminal using port-forward
+kubectl -n podinfo port-forward svc/podinfo 8888:9898
+```
+
+* Access the Argo CD interface in your browser using the URL: https://localhost:8888/
 
 * Remove the application:
 
