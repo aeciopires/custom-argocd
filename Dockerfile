@@ -23,7 +23,7 @@ ENV AWS_PROFILE ${AWS_PROFILE:-'default'}
 ENV SOPS_VERSION="v3.7.3" \
     HELM_SECRETS_VERSION="v3.13.0" \
     HELM_DIFF_VERSION="v3.4.1" \
-    SOPS_CREDENTIALS_FILE='/home/argocd/.sops.yaml'
+    SOPS_CONFIG_FILE='/home/argocd/.sops.yaml'
 #-------- End - Variables --------#
 
 USER root
@@ -36,12 +36,12 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
     && cd /usr/local/bin \
     && mv helm helm.bin \
-    && mv helm-wrapper.sh helm \    
+    && mv helm-wrapper.sh helm \
     && chmod +x helm \
-    && echo "creation_rules:" > ${SOPS_CREDENTIALS_FILE} \
-    && echo "  - kms: '${AWS_KMS_ARN}'" >> ${SOPS_CREDENTIALS_FILE} \
-    && echo "    aws_profile: ${AWS_PROFILE}" >> ${SOPS_CREDENTIALS_FILE} \
-    && chown 999:999 ${SOPS_CREDENTIALS_FILE}
+    && echo "creation_rules:" > ${SOPS_CONFIG_FILE} \
+    && echo "  - kms: '${AWS_KMS_ARN}'" >> ${SOPS_CONFIG_FILE} \
+    && echo "    aws_profile: ${AWS_PROFILE}" >> ${SOPS_CONFIG_FILE} \
+    && chown 999:999 ${SOPS_CONFIG_FILE}
 
 # Install sops
 RUN curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \

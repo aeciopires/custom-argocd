@@ -1,15 +1,15 @@
 #! /bin/sh
 
 AWS_CREDENTIALS_FILE='/home/argocd/.aws/credentials'
-SOPS_CREDENTIALS_FILE='/home/argocd/.sops.yaml'
+SOPS_CONFIG_FILE='/home/argocd/.sops.yaml'
 
-if [ ! -f ${AWS_CREDENTIALS_FILE} ]; then     
+if [ ! -f ${AWS_CREDENTIALS_FILE} ]; then
     echo "[ERROR] File not found: ${AWS_CREDENTIALS_FILE}"
     exit 1
 fi
 
-if [ ! -f ${SOPS_CREDENTIALS_FILE} ]; then     
-    echo "[ERROR] File not found: ${SOPS_CREDENTIALS_FILE}"
+if [ ! -f ${SOPS_CONFIG_FILE} ]; then
+    echo "[ERROR] File not found: ${SOPS_CONFIG_FILE}"
     exit 1
 fi
 
@@ -25,7 +25,7 @@ if [ $1 = "template" ] || [ $1 = "install" ] || [ $1 = "upgrade" ] || [ $1 = "li
     code=$?
     if [ $code -eq 0 ]; then
         # printf insted of echo here because we really don't want any backslash character processing
-        printf '%s\n' "$out" | sed -E "/^removed '.+\.dec'$/d"      
+        printf '%s\n' "$out" | sed -E "/^removed '.+\.dec'$/d"
         exit 0
     else
         exit $code
