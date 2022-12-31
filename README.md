@@ -8,7 +8,7 @@
   - [Updating the custom Argo CD image](#updating-the-custom-argo-cd-image)
     - [Publishing the image](#publishing-the-image)
 - [Use the custom Argo CD](#use-the-custom-argo-cd)
-- [Deploy of testapp with Argo CD](#deploy-of-testapp-with-argo-cd)
+- [Deploy of podinfo with Argo CD](#deploy-of-podinfo-with-argo-cd)
 - [Uninstall Argo CD](#uninstall-argo-cd)
 - [Developers](#developers)
 - [License](#license)
@@ -46,15 +46,13 @@ References:
 
 ## Updating the custom Argo CD image
 
-> In this image, the ``sops`` command will be configured to encrypt and decrypt secrets using [AWS KMS](https://aws.amazon.com/kms).
+> In this image, the ``sops`` command will be configured to encrypt and decrypt secrets using [AWS-KMS](https://aws.amazon.com/kms).
 >
 > More informations in https://github.com/mozilla/sops#kms-aws-profiles.
 
 * Change the image version of Argo CD in ``custom-argocd/Dockerfile`` file, in ``from`` line.
 
-* Change value of the ``AWS_KMS_ARN`` variable in ``custom-argocd/Makefile`` file.
-
-* Change the value of the ``AWS_PROFILE`` variable in ``custom-argocd/Makefile`` file.
+* Change the content ``custom-argocd/sops/sops.yaml`` file to use your [AWS-KMS](https://aws.amazon.com/kms/).
 
 * Change the value of the ``VERSION`` variable in ``custom-argocd/Makefile`` file.
 
@@ -92,14 +90,14 @@ make publish
 
 * Clone this repo. See the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/install.yaml``, if it doesn't exist:
+* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
 ```
 
-* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/install.yaml``, if it doesn't exist:
+* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
       - name: argocd-aws-credentials
@@ -109,7 +107,7 @@ make publish
 
 * Access Kubernetes cluster.
 
-* Change content of the AWS credentials in file ``custom-argocd/credentials``
+* Change the content of the AWS credentials in ``custom-argocd/aws/credentials`` file.
 
 * Run the command:
 
@@ -122,9 +120,9 @@ kubectl create namespace argocd
 # If it exist
 kubectl delete secret argocd-aws-credentials -n argocd
 
-kubectl create -n argocd secret generic argocd-aws-credentials --from-file=credentials=./credentials
+kubectl create -n argocd secret generic argocd-aws-credentials --from-file=credentials=./aws/credentials
 
-kubectl apply -n argocd -f install.yaml
+kubectl apply -n argocd -f argocd/install_argocd.yaml
 
 kubectl -n argocd port-forward svc/argocd-server -n argocd 8080:443
 ```
@@ -161,20 +159,22 @@ sudo chmod +x /usr/bin/argocd
 argocd login localhost:8080
 ```
 
-# Deploy of testapp with Argo CD
+# Deploy of podinfo with Argo CD
 
 > ATTENTION!!! Tested with kind 0.13.0 and k8s 1.23.13
+
+* Create a new content for ``apps/podinfo/secrets.yaml`` file and encript using your [AWS-KMS](https://aws.amazon.com/kms/).
 
 * Deploy the application:
 
 ```bash
-kubectl apply -f testapp/app-example.yaml
+kubectl apply -f apps/podinfo/app-example.yaml
 ```
 
 * Remove the application:
 
 ```bash
-kubectl delete -f testapp/app-example.yaml
+kubectl delete -f apps/podinfo/app-example.yaml
 ```
 
 # Uninstall Argo CD
@@ -182,7 +182,7 @@ kubectl delete -f testapp/app-example.yaml
 * Uninstall Argo CD:
 
 ```bash
-kubectl delete -n argocd -f install.yaml
+kubectl delete -n argocd -f argocd/install_argocd.yaml
 ```
 
 # Developers

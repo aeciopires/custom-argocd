@@ -1,0 +1,4 @@
+creation_rules:
+  # Change the value according your environment
+  - kms: 'AWS_KMS_ARN'
+    aws_profile: default

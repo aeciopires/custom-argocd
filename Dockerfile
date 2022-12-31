@@ -12,39 +12,31 @@ LABEL maintainer="Aecio Pires, Isaac Mecchi" \
 #---------------------------------#
 # Variables
 #---------------------------------#
-# Environment variables (the value is changed at container startup or build image, if empty, it will be given a default value)
-
-ARG AWS_KMS_ARN
-ENV AWS_KMS_ARN ${AWS_KMS_ARN:-'arn:aws:kms:us-east-2:255686512659:key/d38c3af4-e577-4634-81b2-26a54a7ba9b6'}
-
-ARG AWS_PROFILE
-ENV AWS_PROFILE ${AWS_PROFILE:-'default'}
 
 ENV SOPS_VERSION="v3.7.3" \
     HELM_SECRETS_VERSION="v3.13.0" \
-    HELM_DIFF_VERSION="v3.4.1" \
-    SOPS_CONFIG_FILE='/home/argocd/.sops.yaml'
+    HELM_DIFF_VERSION="v3.4.1"
 #-------- End - Variables --------#
 
 USER root
 
-COPY helm-wrapper.sh /usr/local/bin/
+COPY argocd/helm-wrapper.sh /usr/local/bin/helm-wrapper.sh
+COPY sops/sops.yaml /home/argocd/.sops.yaml
 
 RUN apt-get update \
+    # Install packages
     && apt-get install -y curl \
+    # Clean packages
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+    # Configure helm wrapper
     && cd /usr/local/bin \
     && mv helm helm.bin \
     && mv helm-wrapper.sh helm \
     && chmod +x helm \
-    && echo "creation_rules:" > ${SOPS_CONFIG_FILE} \
-    && echo "  - kms: '${AWS_KMS_ARN}'" >> ${SOPS_CONFIG_FILE} \
-    && echo "    aws_profile: ${AWS_PROFILE}" >> ${SOPS_CONFIG_FILE} \
-    && chown 999:999 ${SOPS_CONFIG_FILE}
-
-# Install sops
-RUN curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
+    # Install sops
+    && chown 999:999 /home/argocd/.sops.yaml \
+    && curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
     && chown root:root /usr/local/bin/sops \
     && chmod +x /usr/local/bin/sops \
     && sops --version
