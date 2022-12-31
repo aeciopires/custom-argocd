@@ -7,54 +7,83 @@
 
 # Contributing
 
-> [OPTIONAL] Configure authentication on your account to use the SSH protocol instead of HTTP. See this [tutorial](https://confluence.atlassian.com/bitbucketserver/ssh-access-keys-for-system-use-776639781.html)
+> Configure authentication on your account to use the SSH protocol instead of HTTP. See this [tutorial](https://confluence.atlassian.com/bitbucketserver/ssh-access-keys-for-system-use-776639781.html)
 
-* Install git and other [requirements](REQUIREMENTS.md).
+* Install the [requirements](REQUIREMENTS.md).
 
-When someone wants to contribute to improvements in this repository, the following steps must be performed.
+* Create a fork this repository.
 
-* Clone the repository to your computer, with the following command:
+* Clone the forked repository to your local system:
 
 ```bash
-git clone git@github.com:aeciopires/custom-argocd.git
+git clone URL_FORKED_REPOSITORY
 ```
 
-* Create a branch using the following command:
+* Add the address for the remote original repository:
+
+```bash
+git remote -v
+git remote add upstream git@github.com:aeciopires/custom-argocd.git
+git remote -v
+```
+
+* Create a branch. Example:
 
 ```bash
 git checkout -b BRANCH_NAME
 ```
 
-* Make sure it is the correct branch, using the following command:
+* Make sure you are on the correct branch using the following command. The branch in use contains the '*' before the name.
 
 ```bash
 git branch
 ```
 
-* The branch with an '*' before the name will be used.
-* Make the necessary changes.
-* Test your changes.
-* Commit your changes to the newly created branch.
-* Submit the commits to the remote repository with the following command:
+* Make your changes and tests to the new branch. See the section [Use the custom Argo CD](README.md#use-the-custom-argo-cd).
+* Commit the changes to the branch.
+* Push files to repository remote with command:
 
 ```bash
 git push --set-upstream origin BRANCH_NAME
 ```
 
 * Create a Pull Request (PR) for the `main` branch of the repository. Watch this [tutorial](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork).
-* Update the content with the reviewers suggestions (if necessary).
-* After your PR has been approved and merged, update the changes in your local repository with the following commands:
+* Update the content with the suggestions of the reviewer (if necessary).
+* After your pull request has been approved and merged, update your local clone:
 
 ```bash
 git checkout main
 git pull upstream main
 ```
 
-* Remove the local branch after approval and merge from your PR, using the following command:
+* Clean up after your pull request is merged with command:
 
 ```bash
 git branch -d BRANCH_NAME
 ```
+
+* Then you can update the `main` branch in your forked repository.
+
+```bash
+git push origin main
+```
+
+* And push the deletion of the feature branch to your GitHub repository with command:
+
+```bash
+git push --delete origin BRANCH_NAME
+```
+
+* To keep your fork in sync with the original repository, use these commands:
+
+```bash
+git pull upstream main
+git push origin main
+```
+
+Reference:
+
+* https://blog.scottlowe.org/2015/01/27/using-fork-branch-git-workflow/
 
 # About VSCode
 

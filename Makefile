@@ -1,9 +1,38 @@
-VERSION="v0.3.0"
-APP_NAME="custom-argocd"
+#---------------------------
+#---------------------------
+# VARIABLES
+#---------------------------
+#---------------------------
+
 PATH_DOCKERFILE="./Dockerfile"
 SHELL=/bin/bash
+
+# Change the value according to new releases
+VERSION="v0.3.0"
+
+# Change the value according to new releases
+ARGOCD_VERSION="v2.6.0-rc1"
+
+# Change the value as needed
+APP_NAME="custom-argocd"
+
+# Change the value according your environment
 AWS_PROFILE='default'
+
+# Change the value according your environment
 AWS_KMS_ARN='arn:aws:kms:us-east-2:255686512659:key/d38c3af4-e577-4634-81b2-26a54a7ba9b6'
+
+#----------------------------------------------------------------------------------------------------------
+
+
+
+
+
+#---------------------------
+#---------------------------
+# MAIN
+#---------------------------
+#---------------------------
 
 # References
 # https://ryanstutorials.net/bash-scripting-tutorial/bash-input.php
@@ -21,7 +50,7 @@ $(foreach bin,$(REQUIRED_BINS),\
 
 image:
 	make requirements
-	if [ ! -f "${PATH_DOCKERFILE}" ]; then     
+	if [ ! -f "${PATH_DOCKERFILE}" ]; then
 		echo "[ERROR] File not found: ${PATH_DOCKERFILE}"
 		exit 1
 	fi
@@ -42,5 +71,5 @@ publish:
 	docker login -u "$${DOCKER_HUB_ACCOUNT}" -p "$${DOCKER_HUB_PASSWORD}"
 	docker tag "${APP_NAME}:${VERSION}" "$${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}"
 	docker push "$${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}"
-	wget https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml -O ./install.yaml
+	wget https://raw.githubusercontent.com/argoproj/argo-cd/${ARGOCD_VERSION}/manifests/install.yaml -O ./install.yaml
 	sed -i "s~image: quay.io/argoproj/argocd:\(.*\)~image: $${DOCKER_HUB_ACCOUNT}/${APP_NAME}:${VERSION}~g" ./install.yaml

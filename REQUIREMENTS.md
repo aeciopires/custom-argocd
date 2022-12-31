@@ -2,6 +2,8 @@
 
 - [Requirements to develop/test in this project](#requirements-to-developtest-in-this-project)
   - [Basic requirements](#basic-requirements)
+    - [General Commands](#general-commands)
+      - [Ubuntu](#ubuntu)
     - [Install Docker-CE](#install-docker-ce)
     - [Trivy](#trivy)
   - [Advanced requirements](#advanced-requirements)
@@ -10,20 +12,28 @@
 
 <!-- TOC -->
 
-# Requirements to develop/test in this project
+Requirements to develop/test in this project
 
-## Basic requirements
+# Packages
 
-### Install Docker-CE
+## Ubuntu
 
-Follow instructions of page for install Docker-CE.
+Install the following packages:
 
-* Ubuntu: https://docs.docker.com/install/linux/docker-ce/ubuntu/
-* Debian: https://docs.docker.com/install/linux/docker-ce/debian/
-* CentOS: https://docs.docker.com/install/linux/docker-ce/centos/
-* MacOS: https://docs.docker.com/docker-for-mac/install/
+```bash
+sudo apt install make git
+```
 
-Start the Docker service, configure Docker to boot up with the OS and add your user to the Docker group.
+# Docker
+
+Follow the instructions on the page to install Docker.
+
+* Ubuntu: https://docs.docker.com/engine/install/ubuntu/
+* Debian: https://docs.docker.com/engine/install/debian/
+* CentOS: https://docs.docker.com/engine/install/centos/
+* MacOS: https://docs.docker.com/desktop/install/mac-install/
+
+Start the Docker service, configure Docker to boot with the operating system and add your user to the Docker group.
 
 ```bash
 # Start the Docker service
@@ -39,7 +49,7 @@ sudo setfacl -m user:$USER:rw /var/run/docker.sock
 
 Reference: https://docs.docker.com/engine/install/linux-postinstall/#configure-docker-to-start-on-boot
 
-### Trivy
+# Trivy
 
 To perform a vulnerability scan of Docker images locally, before sending to the Docker Hub, ECR, GCR or other remote registry, you can use trivy: https://github.com/aquasecurity/trivy
 
@@ -51,15 +61,13 @@ mkdir /tmp/caches
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v /tmp/caches:/root/.cache/ aquasec/trivy image IMAGE_NAME:IMAGE_TAG
 ```
 
-## Advanced requirements
+# Kubernetes Cluster
 
-### Kubernetes Cluster
-
-You will need to create a Kubernetes cluster locally using [minikube](https://kubernetes.io/docs/tasks/tools/install-minikube), [microk8s](https://microk8s.io), [kind](https://kind.sigs.k8s.io/docs/user/quick-start/), [k3s](https://k3s.io) or other tools.
+You will need to create a Kubernetes cluster locally using [minikube](https://minikube.sigs.k8s.io/docs/start/), [microk8s](https://microk8s.io), [kind](https://kind.sigs.k8s.io/docs/user/quick-start/), [k3s](https://k3s.io) or other tools.
 
 Or use Kubernetes cluster in [EKS](https://aws.amazon.com/eks), [GKE](https://cloud.google.com/kubernetes-engine), [AKS](https://docs.microsoft.com/en-us/azure/aks), [DOKS](https://www.digitalocean.com/products/kubernetes) or other cloud provider.
 
-### Install Kubectl
+# Kubectl
 
 Simple shell function for Kubectl installation in Linux 64 bits. Copy and paste this code:
 
