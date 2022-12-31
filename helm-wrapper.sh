@@ -3,18 +3,18 @@
 AWS_CREDENTIALS_FILE='/home/argocd/.aws/credentials'
 SOPS_CONFIG_FILE='/home/argocd/.sops.yaml'
 
-if [ ! -f ${AWS_CREDENTIALS_FILE} ]; then
-    echo "[ERROR] File not found: ${AWS_CREDENTIALS_FILE}"
-    exit 1
-fi
-
-if [ ! -f ${SOPS_CONFIG_FILE} ]; then
-    echo "[ERROR] File not found: ${SOPS_CONFIG_FILE}"
-    exit 1
-fi
-
 # helm secrets only supports a few helm commands
 if [ $1 = "template" ] || [ $1 = "install" ] || [ $1 = "upgrade" ] || [ $1 = "lint" ] || [ $1 = "diff" ]; then 
+    if [ ! -f ${AWS_CREDENTIALS_FILE} ]; then
+        echo "[ERROR] File not found: ${AWS_CREDENTIALS_FILE}"
+        exit 1
+    fi
+    
+    if [ ! -f ${SOPS_CONFIG_FILE} ]; then
+        echo "[ERROR] File not found: ${SOPS_CONFIG_FILE}"
+        exit 1
+    fi
+
     # Helm secrets add some useless outputs to every commands including template, namely
     # 'remove: <secret-path>.dec' for every decoded secrets.
     # As argocd use helm template output to compute the resources to apply, these output
