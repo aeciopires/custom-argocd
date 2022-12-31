@@ -38,7 +38,6 @@ References:
 * https://gitlab.com/ittennull/sopshelm
 * https://github.com/camptocamp/docker-argocd
 
-
 # Contributing
 
 * See the [REQUIREMENTS.md](REQUIREMENTS.md) file.
@@ -90,6 +89,8 @@ make publish
 ```
 
 # Use the custom Argo CD
+
+* Clone this repo. See the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
 * Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/install.yaml``, if it doesn't exist:
 
