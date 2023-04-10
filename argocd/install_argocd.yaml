@@ -15908,6 +15908,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       serviceAccountName: argocd-applicationset-controller
       volumes:
@@ -15994,6 +15995,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       initContainers:
       - command:
@@ -16021,6 +16023,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       serviceAccountName: argocd-dex-server
       volumes:
@@ -16084,6 +16087,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
         workingDir: /app
       securityContext:
@@ -16382,6 +16386,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       initContainers:
       - command:
@@ -16406,6 +16411,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       serviceAccountName: argocd-repo-server
       volumes:
@@ -16718,6 +16724,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
       serviceAccountName: argocd-server
       volumes:
@@ -16946,6 +16953,7 @@ spec:
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
         workingDir: /home/argocd
       serviceAccountName: argocd-application-controller

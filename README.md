@@ -94,6 +94,7 @@ make publish
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
         - mountPath: /home/argocd/.sops.yaml
+          subPath: .sops.yaml
           name: argocd-sops-file
 ```
 
