@@ -34,6 +34,7 @@ RUN apt-get update \
     && mv helm-wrapper.sh helm \
     && chmod +x helm \
     # Install sops
+    && touch /home/argocd/.sops.yaml \
     && chown 999:999 /home/argocd/.sops.yaml \
     && curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
     && chown root:root /usr/local/bin/sops \
