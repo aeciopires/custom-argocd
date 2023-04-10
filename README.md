@@ -88,7 +88,7 @@ make publish
 
 * Clone this repo. See the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
+* Search by **argocd-server** *Deployment* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
         - mountPath: /home/argocd/.aws
@@ -98,7 +98,7 @@ make publish
           name: argocd-sops-file
 ```
 
-* Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
+* Search by **argocd-server** *Deployment* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
       - name: argocd-aws-credentials
