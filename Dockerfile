@@ -1,8 +1,8 @@
-FROM argoproj/argocd:v2.6.0-rc1
+FROM argoproj/argocd:v2.6.7
 
 LABEL maintainer="Aecio Pires, Isaac Mecchi" \
-      date_create="30/12/2022" \
-      version="0.3.0" \
+      date_create="10/04/2023" \
+      version="0.4.0" \
       description="My custom ArgoCD image to add support other tools" \
       licensce="GPLv3"
 

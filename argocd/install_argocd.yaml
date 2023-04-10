@@ -5476,7 +5476,6 @@ spec:
                           - spec
                           type: object
                       required:
-                      - pathParamPrefix
                       - repoURL
                       - revision
                       type: object
@@ -7367,7 +7366,6 @@ spec:
                                     - spec
                                     type: object
                                 required:
-                                - pathParamPrefix
                                 - repoURL
                                 - revision
                                 type: object
@@ -10916,7 +10914,6 @@ spec:
                                     - spec
                                     type: object
                                 required:
-                                - pathParamPrefix
                                 - repoURL
                                 - revision
                                 type: object
@@ -14742,10 +14739,13 @@ spec:
                       type: string
                     status:
                       type: string
+                    step:
+                      type: string
                   required:
                   - application
                   - message
                   - status
+                  - step
                   type: object
                 type: array
               conditions:
@@ -15871,7 +15871,13 @@ spec:
               key: applicationsetcontroller.enable.git.submodule
               name: argocd-cmd-params-cm
               optional: true
-        image: aeciopires/custom-argocd:v0.3.0
+        - name: ARGOCD_APPLICATIONSET_CONTROLLER_ENABLE_PROGRESSIVE_SYNCS
+          valueFrom:
+            configMapKeyRef:
+              key: applicationsetcontroller.enable.progressive.syncs
+              name: argocd-cmd-params-cm
+              optional: true
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         name: argocd-applicationset-controller
         ports:
@@ -15899,6 +15905,8 @@ spec:
           name: gpg-keyring
         - mountPath: /tmp
           name: tmp
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
       serviceAccountName: argocd-applicationset-controller
       volumes:
       - configMap:
@@ -15914,6 +15922,9 @@ spec:
         name: gpg-keyring
       - emptyDir: {}
         name: tmp
+      - name: argocd-aws-credentials
+        secret:
+          secretName: argocd-aws-credentials
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15975,13 +15986,15 @@ spec:
           name: dexconfig
         - mountPath: /tls
           name: argocd-dex-server-tls
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
       initContainers:
       - command:
         - cp
         - -n
         - /usr/local/bin/argocd
         - /shared/argocd-dex
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         name: copyutil
         securityContext:
@@ -15998,6 +16011,8 @@ spec:
           name: static-files
         - mountPath: /tmp
           name: dexconfig
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
       serviceAccountName: argocd-dex-server
       volumes:
       - emptyDir: {}
@@ -16015,6 +16030,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-dex-server-tls
+      - name: argocd-aws-credentials
+        secret:
+          secretName: argocd-aws-credentials
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16034,7 +16052,7 @@ spec:
       containers:
       - command:
         - argocd-notifications
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         livenessProbe:
           tcpSocket:
@@ -16051,6 +16069,8 @@ spec:
           name: tls-certs
         - mountPath: /app/config/reposerver/tls
           name: argocd-repo-server-tls
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
         workingDir: /app
       securityContext:
         runAsNonRoot: true
@@ -16072,6 +16092,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - name: argocd-aws-credentials
+        secret:
+          secretName: argocd-aws-credentials
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16111,7 +16134,7 @@ spec:
         - ""
         - --appendonly
         - "no"
-        image: redis:7.0.5-alpine
+        image: redis:7.0.8-alpine
         imagePullPolicy: Always
         name: redis
         ports:
@@ -16293,7 +16316,7 @@ spec:
           value: /helm-working-dir
         - name: HELM_DATA_HOME
           value: /helm-working-dir
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
@@ -16347,7 +16370,7 @@ spec:
         - -n
         - /usr/local/bin/argocd
         - /var/run/argocd/argocd-cmp-server
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         name: copyutil
         securityContext:
           allowPrivilegeEscalation: false
@@ -16361,6 +16384,8 @@ spec:
         volumeMounts:
         - mountPath: /var/run/argocd
           name: var-files
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
       serviceAccountName: argocd-repo-server
       volumes:
       - configMap:
@@ -16625,7 +16650,7 @@ spec:
               key: server.enable.proxy.extension
               name: argocd-cmd-params-cm
               optional: true
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         livenessProbe:
           httpGet:
@@ -16666,6 +16691,8 @@ spec:
           name: plugins-home
         - mountPath: /tmp
           name: tmp
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
       serviceAccountName: argocd-server
       volumes:
       - emptyDir: {}
@@ -16698,6 +16725,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-dex-server-tls
+      - name: argocd-aws-credentials
+        secret:
+          secretName: argocd-aws-credentials
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -16859,7 +16889,7 @@ spec:
               key: application.namespaces
               name: argocd-cmd-params-cm
               optional: true
-        image: aeciopires/custom-argocd:v0.3.0
+        image: aeciopires/custom-argocd:v0.4.0
         imagePullPolicy: Always
         name: argocd-application-controller
         ports:
@@ -16884,6 +16914,8 @@ spec:
           name: argocd-repo-server-tls
         - mountPath: /home/argocd
           name: argocd-home
+        - mountPath: /home/argocd/.aws
+          name: argocd-aws-credentials
         workingDir: /home/argocd
       serviceAccountName: argocd-application-controller
       volumes:
@@ -16900,6 +16932,9 @@ spec:
             path: ca.crt
           optional: true
           secretName: argocd-repo-server-tls
+      - name: argocd-aws-credentials
+        secret:
+          secretName: argocd-aws-credentials
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

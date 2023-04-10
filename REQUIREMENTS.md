@@ -74,7 +74,7 @@ Simple shell function for Kubectl installation in Linux 64 bits. Copy and paste 
 ```bash
 sudo su
 
-VERSION=v1.22.2
+VERSION=v1.23.6
 KUBECTL_BIN=kubectl
 
 function install_kubectl {

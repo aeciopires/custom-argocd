@@ -147,7 +147,7 @@ kubectl -n argocd delete secret argocd-initial-admin-secret
 * The Argo CD can also be managed from the command line. To do this, run the following commands to install the binary:
 
 ```bash
-ARGOCD_BINARY_VERSION=v2.6.0-rc1
+ARGOCD_BINARY_VERSION=v2.6.7
 
 wget https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_BINARY_VERSION}/argocd-linux-amd64 -O /tmp/argocd-linux-amd64
 
