@@ -21,7 +21,6 @@ ENV SOPS_VERSION="v3.7.3" \
 USER root
 
 COPY argocd/helm-wrapper.sh /usr/local/bin/helm-wrapper.sh
-COPY sops/sops.yaml /home/argocd/.sops.yaml
 
 RUN apt-get update \
     # Install packages

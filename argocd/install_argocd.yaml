@@ -15907,6 +15907,8 @@ spec:
           name: tmp
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       serviceAccountName: argocd-applicationset-controller
       volumes:
       - configMap:
@@ -15925,6 +15927,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -15988,6 +15993,8 @@ spec:
           name: argocd-dex-server-tls
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       initContainers:
       - command:
         - cp
@@ -16013,6 +16020,8 @@ spec:
           name: dexconfig
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       serviceAccountName: argocd-dex-server
       volumes:
       - emptyDir: {}
@@ -16033,6 +16042,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16071,6 +16083,8 @@ spec:
           name: argocd-repo-server-tls
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
         workingDir: /app
       securityContext:
         runAsNonRoot: true
@@ -16095,6 +16109,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16364,6 +16381,8 @@ spec:
           name: plugins
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       initContainers:
       - command:
         - cp
@@ -16386,6 +16405,8 @@ spec:
           name: var-files
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       serviceAccountName: argocd-repo-server
       volumes:
       - configMap:
@@ -16421,6 +16442,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -16693,6 +16717,8 @@ spec:
           name: tmp
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
       serviceAccountName: argocd-server
       volumes:
       - emptyDir: {}
@@ -16728,6 +16754,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: apps/v1
 kind: StatefulSet
@@ -16916,6 +16945,8 @@ spec:
           name: argocd-home
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
         workingDir: /home/argocd
       serviceAccountName: argocd-application-controller
       volumes:
@@ -16935,6 +16966,9 @@ spec:
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy

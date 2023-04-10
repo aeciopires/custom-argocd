@@ -52,8 +52,6 @@ References:
 
 * Change the image version of Argo CD in ``custom-argocd/Dockerfile`` file, in ``from`` line.
 
-* Change the content ``custom-argocd/sops/sops.yaml`` file to use your [AWS-KMS](https://aws.amazon.com/kms/).
-
 * Change the value of the ``VERSION`` variable in ``custom-argocd/Makefile`` file.
 
 * Commands to build the image:
@@ -95,6 +93,8 @@ make publish
 ```yaml
         - mountPath: /home/argocd/.aws
           name: argocd-aws-credentials
+        - mountPath: /home/argocd/.sops.yaml
+          name: argocd-sops-file
 ```
 
 * Search by **argocd-repo-server** *deployment* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
@@ -103,11 +103,16 @@ make publish
       - name: argocd-aws-credentials
         secret:
           secretName: argocd-aws-credentials
+      - name: argocd-sops-file
+        secret:
+          secretName: argocd-sops-file
 ```
 
 * Access Kubernetes cluster.
 
 * Change the content of the AWS credentials in ``custom-argocd/aws/credentials`` file.
+
+* Change the content ``custom-argocd/sops/sops.yaml`` file to use your [AWS-KMS](https://aws.amazon.com/kms/).
 
 * Run the command:
 
@@ -121,6 +126,8 @@ kubectl create namespace argocd
 kubectl delete secret argocd-aws-credentials -n argocd
 
 kubectl create -n argocd secret generic argocd-aws-credentials --from-file=credentials=./aws/credentials
+
+kubectl create -n argocd secret generic argocd-sops-file --from-file=credentials=./sops/sops.yaml
 
 kubectl apply -n argocd -f argocd/install_argocd.yaml
 
