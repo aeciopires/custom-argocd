@@ -125,6 +125,8 @@ kubectl create namespace argocd
 # If it exist
 kubectl delete secret argocd-aws-credentials -n argocd
 
+kubectl delete secret argocd-sops-file -n argocd
+
 kubectl create -n argocd secret generic argocd-aws-credentials --from-file=credentials=./aws/credentials
 
 kubectl create -n argocd secret generic argocd-sops-file --from-file=credentials=./sops/sops.yaml
