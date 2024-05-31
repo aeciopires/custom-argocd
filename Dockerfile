@@ -1,10 +1,10 @@
-FROM argoproj/argocd:v2.6.7
+FROM quay.io/argoproj/argocd:v2.11.2
 
 LABEL maintainer="Aecio Pires, Isaac Mecchi" \
-      date_create="10/04/2023" \
-      version="0.4.0" \
+      date_create="31/05/2024" \
+      version="0.5.0" \
       description="My custom ArgoCD image to add support other tools" \
-      licensce="GPLv3"
+      license="GPLv3"
 
 # References:
 # See the README.md file in the About section
@@ -13,9 +13,9 @@ LABEL maintainer="Aecio Pires, Isaac Mecchi" \
 # Variables
 #---------------------------------#
 
-ENV SOPS_VERSION="v3.7.3" \
-    HELM_SECRETS_VERSION="v3.13.0" \
-    HELM_DIFF_VERSION="v3.4.1"
+ENV SOPS_VERSION="v3.8.1" \
+    HELM_SECRETS_VERSION="v4.6.0" \
+    HELM_DIFF_VERSION="v3.9.7"
 #-------- End - Variables --------#
 
 USER root
@@ -36,7 +36,7 @@ RUN apt-get update \
     # Install sops
     && touch /home/argocd/.sops.yaml \
     && chown 999:999 /home/argocd/.sops.yaml \
-    && curl -o /usr/local/bin/sops -L https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux \
+    && curl -o /usr/local/bin/sops -L https://github.com/getsops/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux.amd64 \
     && chown root:root /usr/local/bin/sops \
     && chmod +x /usr/local/bin/sops \
     && sops --version

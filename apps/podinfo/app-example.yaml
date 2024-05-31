@@ -26,7 +26,7 @@ spec:
   sources:
   - repoURL: https://stefanprodan.github.io/podinfo
     chart: podinfo
-    targetRevision: 6.3.0
+    targetRevision: 6.3.3
     helm:
       valueFiles:
       - $values/apps/podinfo/values.yaml

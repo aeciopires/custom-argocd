@@ -17,7 +17,7 @@
 
 # About
 
-My custom Docker image of Argo CD to add support [Sops](https://github.com/mozilla/sops) and Helm plugins:
+My custom Docker image of Argo CD to add support [Sops](https://github.com/getsops/sops) and Helm plugins:
 * [helm secrets](https://github.com/jkroepke/helm-secrets)
 * [helm diff](https://github.com/databus23/helm-diff)
 
@@ -48,7 +48,7 @@ References:
 
 > In this image, the ``sops`` command will be configured to encrypt and decrypt secrets using [AWS-KMS](https://aws.amazon.com/kms).
 >
-> More informations in https://github.com/mozilla/sops#kms-aws-profiles.
+> More informations in https://github.com/getsops/sops#kms-aws-profiles.
 
 * Change the image version of Argo CD in ``custom-argocd/Dockerfile`` file, in ``from`` line.
 
@@ -88,7 +88,7 @@ make publish
 
 * Clone this repo. See the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
-* Search by **argocd-server** and **argocd-repço-server** *Deployments* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
+* Search by **argocd-server** and **argocd-repo-server** *Deployments* and add follow content in ``spec.template.spec.containers.volumeMounts`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
         - mountPath: /home/argocd/.aws
@@ -98,7 +98,7 @@ make publish
           name: argocd-sops-file
 ```
 
-* Search by **argocd-server** and **argocd-repço-server** *Deployments* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
+* Search by **argocd-server** and **argocd-repo-server** *Deployments* and add follow content in ``spec.template.spec.containers.volumes`` section of file ``custom-argocd/argocd/install_argocd.yaml``, if it doesn't exist:
 
 ```yaml
       - name: argocd-aws-credentials
@@ -157,7 +157,7 @@ kubectl -n argocd delete secret argocd-initial-admin-secret
 * The Argo CD can also be managed from the command line. To do this, run the following commands to install the binary:
 
 ```bash
-ARGOCD_BINARY_VERSION=v2.6.7
+ARGOCD_BINARY_VERSION=v2.11.2
 
 wget https://github.com/argoproj/argo-cd/releases/download/${ARGOCD_BINARY_VERSION}/argocd-linux-amd64 -O /tmp/argocd-linux-amd64
 
@@ -174,7 +174,7 @@ argocd login localhost:8080
 
 # Deploy of podinfo with Argo CD
 
-> ATTENTION!!! Tested with kind 0.17.0 and k8s 1.23.13
+> ATTENTION!!! Tested with kind 0.23.0 and k8s 1.30.1
 
 * Create a new content for ``apps/podinfo/secrets.yaml`` file and encript using your [AWS-KMS](https://aws.amazon.com/kms/).
   * The original content is:
