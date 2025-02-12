@@ -8,10 +8,10 @@ PATH_DOCKERFILE="./Dockerfile"
 SHELL=/bin/bash
 
 # Change the value according to new releases
-VERSION="v0.5.0"
+VERSION="v0.6.0"
 
 # Change the value according to new releases
-ARGOCD_VERSION="v2.11.2"
+ARGOCD_VERSION="v2.14.2"
 
 # Change the value as needed
 APP_NAME="custom-argocd"

@@ -1,8 +1,8 @@
-FROM quay.io/argoproj/argocd:v2.11.2
+FROM quay.io/argoproj/argocd:v2.14.2
 
 LABEL maintainer="Aecio Pires, Isaac Mecchi" \
-      date_create="31/05/2024" \
-      version="0.5.0" \
+      date_create="12/02/2025" \
+      version="0.6.0" \
       description="My custom ArgoCD image to add support other tools" \
       license="GPLv3"
 
@@ -13,9 +13,9 @@ LABEL maintainer="Aecio Pires, Isaac Mecchi" \
 # Variables
 #---------------------------------#
 
-ENV SOPS_VERSION="v3.8.1" \
-    HELM_SECRETS_VERSION="v4.6.0" \
-    HELM_DIFF_VERSION="v3.9.7"
+ENV SOPS_VERSION="v3.9.4" \
+    HELM_SECRETS_VERSION="v4.6.2" \
+    HELM_DIFF_VERSION="v3.10.0"
 #-------- End - Variables --------#
 
 USER root

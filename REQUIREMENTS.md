@@ -28,10 +28,10 @@ sudo apt install make git
 
 Follow the instructions on the page to install Docker.
 
-* Ubuntu: https://docs.docker.com/engine/install/ubuntu/
-* Debian: https://docs.docker.com/engine/install/debian/
-* CentOS: https://docs.docker.com/engine/install/centos/
-* MacOS: https://docs.docker.com/desktop/install/mac-install/
+- Ubuntu: https://docs.docker.com/engine/install/ubuntu/
+- Debian: https://docs.docker.com/engine/install/debian/
+- CentOS: https://docs.docker.com/engine/install/centos/
+- MacOS: https://docs.docker.com/desktop/install/mac-install/
 
 Start the Docker service, configure Docker to boot with the operating system and add your user to the Docker group.
 
@@ -74,7 +74,7 @@ Simple shell function for Kubectl installation in Linux 64 bits. Copy and paste 
 ```bash
 sudo su
 
-VERSION=v1.30.1
+VERSION=v1.32.0
 KUBECTL_BIN=kubectl
 
 function install_kubectl {
